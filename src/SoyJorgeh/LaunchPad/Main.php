@@ -13,7 +13,6 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\math\Vector3;
 use pocketmine\event\entity\EntityDammageEvent;
 
-
 class Main extends PluginBase implements Listener{
 
     public function onEnable(): void {
@@ -24,6 +23,8 @@ class Main extends PluginBase implements Listener{
         $this->getLogger()->info("The plugin turn OFF");
     }
 
+    public $noDammage = [];
+
     public function onMove(PlayerMoveEvent $event){
         $player = $event->getPlayer();
         $x = $player->getPosition()->getX();
@@ -31,7 +32,15 @@ class Main extends PluginBase implements Listener{
         $z = $player->getPosition()->getZ();
         $block = $player->getWorld()->getBlock(new Vector3($x, $y - 0.5, $z));
         if($block->getId() === 165){
+            $this->$noDammage[$player->getName()] = $player->getName();
             $player->setMotion(new Vector3(0, 0.5, 0));
+        }
+    }
+
+    public function onDammage(EntityDammageEvent $event){
+        if($event->getCause() == EntityDammageEvent::CAUSE_FALL){
+            $event->cancel();
+            unset($this->noDammage[$event->getEntity()->getName()]);
         }
     }
 
