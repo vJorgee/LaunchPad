@@ -11,12 +11,17 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 
 use pocketmine\math\Vector3;
+use pocketmine\event\entity\EntityDammageEvent;
 
 
 class Main extends PluginBase implements Listener{
 
-    public function onEnable() : void {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+    public function onEnable(): void {
+        $this->getLogger()->info("The plugin turn ON");
+    }
+
+    public function onDisable(): void {
+        $this->getLogger()->info("The plugin turn OFF");
     }
 
     public function onMove(PlayerMoveEvent $event){
