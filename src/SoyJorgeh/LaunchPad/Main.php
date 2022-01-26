@@ -13,6 +13,9 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\math\Vector3;
 use pocketmine\event\entity\EntityDammageEvent;
 
+use pocketmine\world\particle\FlameParticle;
+use pocketmine\world\sound\BlazeShootSound;
+
 class Main extends PluginBase implements Listener{
 
     public function onEnable(): void {
@@ -27,6 +30,7 @@ class Main extends PluginBase implements Listener{
 
     public function onMove(PlayerMoveEvent $event){
         $player = $event->getPlayer();
+        $world = $player->getWorld();
         $x = $player->getPosition()->getX();
         $y = $player->getPosition()->getY();
         $z = $player->getPosition()->getZ();
@@ -34,6 +38,11 @@ class Main extends PluginBase implements Listener{
         if($block->getId() === 165){
             $this->$noDammage[$player->getName()] = $player->getName();
             $player->setMotion(new Vector3(0, 0.5, 0));
+            $world->addParticle(new Vector3($x + 0.5, $y, $z), new FlameParticle($x + 0.5, $y, $z));
+            $world->addParticle(new Vector3($x, $y, $z + 0.5), new FlameParticle($x, $y, $z + 0.5));
+            $world->addParticle(new Vector3($x - 0.5, $y, $z), new FlameParticle($x - 0.5, $y, $z));
+            $world->addParticle(new Vector3($x, $y, $z - 0.5), new FlameParticle($x, $y, $z - 0.5));
+            $world->addSound(new Vector3($x, $y, $z), new BlazeShootSound($player));
         }
     }
 
