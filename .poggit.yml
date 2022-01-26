@@ -5,4 +5,5 @@ branches:
 projects:
   LaunchPad:
     path: ""
+    icon: "icon.gif"
 ...
